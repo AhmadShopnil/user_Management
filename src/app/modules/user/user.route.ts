@@ -12,7 +12,7 @@ router.delete('/:userId', userController.deleteSingleUser);
 
 // Routes for orders
 
-// router.get('/:userId/orders/total-price', orderController.getTotalOrderPrice);
+router.get('/:userId/orders/total-price', orderController.getTotalOrderPrice);
 router.get('/:userId/orders', orderController.getOrderListById);
 router.put('/:userId/orders', orderController.createNewOrder);
 
