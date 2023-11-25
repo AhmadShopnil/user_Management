@@ -32,25 +32,25 @@ const getOrderListByIdFromDB = async (userId: number) => {
 };
 
 // calculating total price
-const getTotalOrderPrice = async (userId: number) => {
-  const user = await UserModel.findOne({ userId });
+// const getTotalOrderPrice = async (userId: number) => {
+//   const user = await UserModel.findOne({ userId });
 
-  // calculate cost
-  if (user && user.orders && user.orders.length > 0) {
-    let totalCost = 0;
-    user.orders?.forEach((item: Order) => {
-      totalCost = totalCost + item.price * item.quantity;
-    });
-    return totalCost;
-  } else if (user === null) {
-    return user;
-  } else {
-    return 'this user have no order';
-  }
-};
+//   // calculate cost
+//   if (user && user.orders && user.orders.length > 0) {
+//     let totalCost = 0;
+//     user.orders?.forEach((item: Order) => {
+//       totalCost = totalCost + item.price * item.quantity;
+//     });
+//     return totalCost;
+//   } else if (user === null) {
+//     return user;
+//   } else {
+//     return 'this user have no order';
+//   }
+// };
 
 export const orderService = {
   createNewOrderInDB,
   getOrderListByIdFromDB,
-  getTotalOrderPrice,
+  // getTotalOrderPrice,
 };

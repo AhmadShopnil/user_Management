@@ -20,15 +20,21 @@ const createNewOrder = async (req: Request, res: Response) => {
     } else {
       res.status(500).json({
         success: false,
-        message:
-          'Failed to create new order Beause user not found for create order',
+        message: 'Failed to create new order',
+        error: {
+          code: 404,
+          description: 'Failed to create new order',
+        },
       });
     }
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Failed to create new order',
-      error: error,
+      message: 'Failed to create new user',
+      error: {
+        code: 404,
+        description: 'Failed to create new user',
+      },
     });
   }
 };
@@ -47,46 +53,55 @@ const getOrderListById = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Failed to get order List by Id  Beause user not found!!',
+      message: 'Failed to get  order list',
+      error: {
+        code: 404,
+        description: 'Failed to get order list by Id  Because user not found!!',
+      },
     });
   }
 };
-const getTotalOrderPrice = async (req: Request, res: Response) => {
-  try {
-    const { userId } = req.params;
 
-    const result = await orderService.getTotalOrderPrice(Number(userId));
-    console.log(result);
-    if (typeof result === 'number') {
-      res.status(200).json({
-        success: true,
-        message: 'Total price calculated successfully!',
-        data: {
-          totalPrice: result,
-        },
-      });
-    } else if (typeof result === 'string') {
-      res.status(500).json({
-        success: false,
-        message: result,
-      });
-    } else {
-      res.status(500).json({
-        success: false,
-        message:
-          'Failed to get total order cost by Id  Because user not found!!',
-      });
-    }
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: 'Failed to get total order cost by Id  Because user not found!!',
-    });
-  }
-};
+// const getTotalOrderPrice = async (req: Request, res: Response) => {
+//   try {
+//     const { userId } = req.params;
+
+//     const result = await orderService.getTotalOrderPrice(Number(userId));
+//     console.log(result);
+//     if (typeof result === 'number') {
+//       res.status(200).json({
+//         success: true,
+//         message: 'Total price calculated successfully!',
+//         data: {
+//           totalPrice: result,
+//         },
+//       });
+//     } else if (typeof result === 'string') {
+//       res.status(500).json({
+//         success: false,
+//         message: result,
+//       });
+//     } else {
+//       res.status(500).json({
+//         success: false,
+//         message: 'Failed to get total order cost',
+//         error: {
+//           code: 404,
+//           description: 'Failed to get total order cost by Id  Because user not found!!',,
+//         },
+//       });
+//     }
+
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: 'Failed to get total order cost by Id  Because user not found!!',
+//     });
+//   }
+// };
 
 export const orderController = {
   createNewOrder,
   getOrderListById,
-  getTotalOrderPrice,
+  // getTotalOrderPrice,
 };
