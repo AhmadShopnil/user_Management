@@ -1,11 +1,16 @@
 import { Request, Response } from 'express';
 import { userService } from './user.services';
+import userValidationSchema from './user.validation';
 
 const createUser = async (req: Request, res: Response) => {
   try {
     const { userData } = req.body;
 
-    const result = await userService.createUserIntoDB(userData);
+    // zod validation
+    const zodParseData = userValidationSchema.parse(userData);
+
+    // call service for create user in database
+    const result = await userService.createUserIntoDB(zodParseData);
     res.status(200).json({
       success: true,
       message: 'User  successfully created',
@@ -17,7 +22,7 @@ const createUser = async (req: Request, res: Response) => {
       message: 'Failed to create new users',
       error: {
         code: 404,
-        description: 'Failed to create new users',
+        description: error,
       },
     });
   }
@@ -49,7 +54,7 @@ const getSingleUser = async (req: Request, res: Response) => {
     const result = await userService.geSingleUserFromDB(Number(userId));
     res.status(200).json({
       success: true,
-      message: 'User  fetched  created',
+      message: 'User  fetched  success',
       data: result,
     });
   } catch (error) {

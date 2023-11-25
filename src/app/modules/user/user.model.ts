@@ -1,6 +1,8 @@
 import { Schema, model } from 'mongoose';
 
 import { Address, User, UserName } from './user.interface';
+import bcrypt from 'bcrypt';
+import config from '../../config';
 
 const userNameSchema = new Schema<UserName>({
   firstName: {
@@ -34,7 +36,11 @@ const AddressSchema = new Schema<Address>({
 
 const UserSchema = new Schema<User>({
   userId: { type: Number, required: true, unique: true },
-  username: String,
+  username: {
+    type: String,
+    unique: true,
+    required: true,
+  },
   fullName: {
     type: userNameSchema,
     required: [true, 'Name is must Required'],
@@ -54,6 +60,24 @@ const UserSchema = new Schema<User>({
   hobbies: [String],
   address: AddressSchema,
   orders: [],
+});
+
+// pre save middleware hass pasword
+UserSchema.pre('save', async function (next) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this;
+
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_round),
+  );
+  next();
+});
+
+UserSchema.post('save', function (doc, next) {
+  doc.password = '';
+
+  next();
 });
 
 export const UserModel = model<User>('User', UserSchema);
