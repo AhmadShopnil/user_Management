@@ -8,12 +8,12 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/api/users', UserRoutes);
-app.use('/api/users/orders', OrderRoutes);
+// app.use('/api/users/orders', OrderRoutes);
 
-app.get('/', (req: Request, res: Response) => {
-  const a: number = 10;
+// app.get('/', (req: Request, res: Response) => {
+//   const a: number = 10;
 
-  res.send(a);
-});
+//   res.send(a);
+// });
 
 export default app;

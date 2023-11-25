@@ -21,6 +21,17 @@ const createNewOrderInDB = async (userId: number, orderData: Order) => {
   }
 };
 
+const getOrderListByIdFromDB = async (userId: number) => {
+  const result = await UserModel.findOne(
+    { userId },
+    {
+      orders: 1,
+    },
+  );
+  return result;
+};
+
 export const orderService = {
   createNewOrderInDB,
+  getOrderListByIdFromDB,
 };
