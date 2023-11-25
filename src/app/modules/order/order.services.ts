@@ -38,7 +38,7 @@ const getOrderListByIdFromDB = async (userId: number) => {
 //   // calculate cost
 //   if (user && user.orders && user.orders.length > 0) {
 //     let totalCost = 0;
-//     user.orders?.forEach((item: Order) => {
+//    const result= user.orders?.map((item: Order)=> {
 //       totalCost = totalCost + item.price * item.quantity;
 //     });
 //     return totalCost;
@@ -52,5 +52,4 @@ const getOrderListByIdFromDB = async (userId: number) => {
 export const orderService = {
   createNewOrderInDB,
   getOrderListByIdFromDB,
-  // getTotalOrderPrice,
 };
