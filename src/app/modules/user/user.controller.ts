@@ -14,8 +14,11 @@ const createUser = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Failed to create new user',
-      error: error,
+      message: 'Failed to create new users',
+      error: {
+        code: 404,
+        description: 'Failed to create new users',
+      },
     });
   }
 };
@@ -31,8 +34,11 @@ const getAllUsers = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Failed to get all user',
-      error: error,
+      message: 'Failed to get all users',
+      error: {
+        code: 404,
+        description: 'User not found!',
+      },
     });
   }
 };
@@ -49,8 +55,11 @@ const getSingleUser = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Failed to get user data',
-      error: error,
+      message: 'User not found',
+      error: {
+        code: 404,
+        description: 'User not found!',
+      },
     });
   }
 };
@@ -71,8 +80,11 @@ const updateSingleUser = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'User update failed',
-      error: error,
+      message: 'User update faild',
+      error: {
+        code: 404,
+        description: 'User not found!',
+      },
     });
   }
 };
@@ -89,8 +101,11 @@ const deleteSingleUser = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'User deleted failed',
-      error: error,
+      message: 'User Delete faild',
+      error: {
+        code: 404,
+        description: 'User not found!',
+      },
     });
   }
 };
