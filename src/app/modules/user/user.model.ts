@@ -53,6 +53,7 @@ const UserSchema = new Schema<User>({
   },
   hobbies: [String],
   address: AddressSchema,
+  orders: [],
 });
 
 export const UserModel = model<User>('User', UserSchema);
