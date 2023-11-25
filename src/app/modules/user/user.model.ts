@@ -74,10 +74,16 @@ UserSchema.pre('save', async function (next) {
   next();
 });
 
-UserSchema.post('save', function (doc, next) {
-  doc.password = '';
+// UserSchema.post('save', function (doc, next) {
+//   doc.password = '';
 
-  next();
-});
+//   next();
+// });
+
+UserSchema.methods.toJSON = function () {
+  const deletedPass = this.toObject();
+  delete deletedPass.password;
+  return deletedPass;
+};
 
 export const UserModel = model<User>('User', UserSchema);

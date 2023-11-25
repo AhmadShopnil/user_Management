@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { orderService } from './order.services';
-import { Order } from './order.interface';
 
 const createNewOrder = async (req: Request, res: Response) => {
   try {
@@ -56,23 +55,26 @@ const getTotalOrderPrice = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
 
-    const result = await orderService.getOrderListByIdFromDB(Number(userId));
-
-    if (result !== null && result?.orders?.length !== 0 && result?.orders) {
-      let totalCost = 0;
-      result.orders?.forEach((item: Order) => {
-        totalCost = totalCost + item.price * item.quantity;
-      });
-
+    const result = await orderService.getTotalOrderPrice(Number(userId));
+    console.log(result);
+    if (typeof result === 'number') {
       res.status(200).json({
         success: true,
         message: 'Total price calculated successfully!',
-        totalPrice: totalCost,
+        data: {
+          totalPrice: result,
+        },
+      });
+    } else if (typeof result === 'string') {
+      res.status(500).json({
+        success: false,
+        message: result,
       });
     } else {
       res.status(500).json({
         success: false,
-        message: 'Failed to get total order cost by Id',
+        message:
+          'Failed to get total order cost by Id  Because user not found!!',
       });
     }
   } catch (error) {
