@@ -1,10 +1,10 @@
 import { Schema, model } from 'mongoose';
 
-import { Address, User, UserName } from './user.interface';
+import { TAddress, TOrder, TUser, TUserName } from './user.interface';
 import bcrypt from 'bcrypt';
 import config from '../../config';
 
-const userNameSchema = new Schema<UserName>({
+const userNameSchema = new Schema<TUserName>({
   firstName: {
     type: String,
     required: [true, 'FirstName is must Required'],
@@ -19,7 +19,7 @@ const userNameSchema = new Schema<UserName>({
   },
 });
 
-const AddressSchema = new Schema<Address>({
+const AddressSchema = new Schema<TAddress>({
   street: {
     type: String,
     required: [true, 'street is must Required'],
@@ -34,7 +34,23 @@ const AddressSchema = new Schema<Address>({
   },
 });
 
-const UserSchema = new Schema<User>({
+const OrderSchema = new Schema<TOrder>({
+  productName: {
+    type: String,
+    required: [true, 'productName is must Required'],
+    trim: true,
+  },
+  price: {
+    type: Number,
+    required: [true, 'price is must Required'],
+  },
+  quantity: {
+    type: Number,
+    required: [true, 'quantity is must Required'],
+  },
+});
+
+const UserSchema = new Schema<TUser>({
   userId: { type: Number, required: true, unique: true },
   username: {
     type: String,
@@ -59,7 +75,11 @@ const UserSchema = new Schema<User>({
   },
   hobbies: [String],
   address: AddressSchema,
-  orders: [],
+  orders: [
+    {
+      type: OrderSchema,
+    },
+  ],
 });
 
 // pre save middleware hass pasword
@@ -74,10 +94,8 @@ UserSchema.pre('save', async function (next) {
   next();
 });
 
-// UserSchema.post('save', function (doc, next) {
-//   doc.password = '';
+// UserSchema.pre('save', function (doc, next) {
 
-//   next();
 // });
 
 UserSchema.methods.toJSON = function () {
@@ -86,4 +104,4 @@ UserSchema.methods.toJSON = function () {
   return deletedPass;
 };
 
-export const UserModel = model<User>('User', UserSchema);
+export const UserModel = model<TUser>('User', UserSchema);

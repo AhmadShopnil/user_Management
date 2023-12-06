@@ -2,8 +2,8 @@ import { z } from 'zod';
 
 // Zod schema for the UserName
 const UserNameValidationSchema = z.object({
-  firstName: z.string().min(1).max(20),
-  lastName: z.string().min(1).max(20),
+  firstName: z.string().min(1).max(30),
+  lastName: z.string().min(1).max(30),
 });
 
 // Zod schema for the Address
