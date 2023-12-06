@@ -3,6 +3,13 @@ import { TOrder, TUser } from './user.interface';
 import { UserModel } from './user.model';
 
 const createUserIntoDB = async (user: TUser) => {
+  // check is user already exist or not
+  const userExists = await UserModel.isUserExists(user.userId);
+
+  if (userExists) {
+    throw new Error('User Already Exists!');
+  }
+
   const result = await UserModel.create(user);
   return result;
 };
@@ -16,6 +23,9 @@ const geAllUserFromDB = async () => {
       age: 1,
       email: 1,
       address: 1,
+      isActive: 1,
+      hobbies: 1,
+      orders: 1,
     },
   );
   return result;
@@ -42,8 +52,15 @@ const updateSingleUSerInDB = async (userId: number, updateData: object) => {
   return result;
 };
 const deleteSingleUSerInDB = async (userId: number) => {
-  const result = await UserModel.deleteOne({ userId });
-  return result;
+  // check is user Really exist or not
+  const userExists = await UserModel.isUserExists(userId);
+
+  if (userExists) {
+    const result = await UserModel.deleteOne({ userId });
+    return result;
+  } else {
+    throw new Error('Do not found any user by this id to delete');
+  }
 };
 
 /// Order management section

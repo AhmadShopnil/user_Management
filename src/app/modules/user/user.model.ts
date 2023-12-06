@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-import { TAddress, TOrder, TUser, TUserName } from './user.interface';
+import { TAddress, TOrder, TUser, TUserName, User } from './user.interface';
 import bcrypt from 'bcrypt';
 import config from '../../config';
 
@@ -50,7 +50,7 @@ const OrderSchema = new Schema<TOrder>({
   },
 });
 
-const UserSchema = new Schema<TUser>({
+const UserSchema = new Schema<TUser, User>({
   userId: { type: Number, required: true, unique: true },
   username: {
     type: String,
@@ -94,6 +94,11 @@ UserSchema.pre('save', async function (next) {
   next();
 });
 
+UserSchema.statics.isUserExists = async function (userId: number) {
+  const existingUser = await UserModel.findOne({ userId });
+  return existingUser;
+};
+
 // UserSchema.pre('save', function (doc, next) {
 
 // });
@@ -104,4 +109,4 @@ UserSchema.methods.toJSON = function () {
   return deletedPass;
 };
 
-export const UserModel = model<TUser>('User', UserSchema);
+export const UserModel = model<TUser, User>('User', UserSchema);

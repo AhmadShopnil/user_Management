@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
 import { userService } from './user.services';
 import userValidationSchema from './user.validation';
@@ -16,13 +17,13 @@ const createUser = async (req: Request, res: Response) => {
       message: 'User  successfully created',
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       message: 'Failed to create new users',
       error: {
         code: 404,
-        description: error,
+        description: error?.message,
       },
     });
   }
@@ -125,13 +126,13 @@ const deleteSingleUser = async (req: Request, res: Response) => {
       message: 'User deleted successfully!',
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       message: 'User Delete faild',
       error: {
         code: 404,
-        description: 'User not found!',
+        description: error?.message,
       },
     });
   }
