@@ -57,6 +57,7 @@ const updateSingleUSerInDB = async (userId: number, updateData: object) => {
     const result = await UserModel.findOneAndUpdate({ userId }, updateData, {
       new: true,
     });
+
     return result;
   } else {
     throw new Error('Do not found any user by this id to Update');
