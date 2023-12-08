@@ -34,6 +34,7 @@ const geSingleUserFromDB = async (userId: number) => {
   const result = await UserModel.findOne(
     { userId },
     {
+      userId: 1,
       username: 1,
       fullName: 1,
       age: 1,
@@ -48,8 +49,18 @@ const geSingleUserFromDB = async (userId: number) => {
 };
 
 const updateSingleUSerInDB = async (userId: number, updateData: object) => {
-  const result = await UserModel.updateOne({ userId }, { $set: updateData });
-  return result;
+  const userExists = await UserModel.isUserExists(userId);
+
+  if (userExists) {
+    // const result = await UserModel.updateOne({ userId }, { $set: updateData });
+
+    const result = await UserModel.findOneAndUpdate({ userId }, updateData, {
+      new: true,
+    });
+    return result;
+  } else {
+    throw new Error('Do not found any user by this id to Update');
+  }
 };
 const deleteSingleUSerInDB = async (userId: number) => {
   // check is user Really exist or not
